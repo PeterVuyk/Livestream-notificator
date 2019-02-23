@@ -1,43 +1,45 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: 'sam-app
-
-  Sample SAM Template for sam-app
-
-  '
+Description: LivestreamNotificatorFunction, Send notifications based on events from
+  the Livestream server
 Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
   Function:
     Timeout: 20
 Resources:
-  HelloWorldFunction:
+  LivestreamNotificatorFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://sam-package-files/dbe3df23fbdefac9232b01f3686ff1c9
       Handler: livestream.App::handleRequest
       Runtime: java8
-      Environment:
-        Variables:
-          PARAM1: VALUE
+      CodeUri: s3://sam-package-files/549c4d3d62d174f5c640526c2c8936eb
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 30
       Events:
-        HelloWorld:
+        GetResource:
           Type: Api
           Properties:
-            Path: /hello
-            Method: get
+            Path: /{proxy+}
+            Method: any
 Outputs:
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
+  MyServiceApi:
+    Description: URL for application
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
-  HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping
+    Export:
+      Name: MyServiceApi
+  LivestreamNotificatorFunction:
+    Description: Send notification based on events from the livestream server - Function
+      ARN
     Value:
       Fn::GetAtt:
-      - HelloWorldFunction
+      - LivestreamNotificatorFunction
       - Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
+  LivestreamNotificatorFunctionIamRole:
+    Description: Implicit IAM Role created for the livestream notificator function
     Value:
       Fn::GetAtt:
-      - HelloWorldFunctionRole
+      - LivestreamNotificatorFunctionRole
       - Arn
