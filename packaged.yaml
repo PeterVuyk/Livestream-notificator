@@ -13,23 +13,15 @@ Resources:
     Properties:
       Handler: livestream.App::handleRequest
       Runtime: java8
-      CodeUri: s3://sam-package-files/549c4d3d62d174f5c640526c2c8936eb
+      CodeUri: s3://sam-package-files/770dbdea11b266b34035ed97eb00dcac
       MemorySize: 512
       Policies: AWSLambdaBasicExecutionRole
-      Timeout: 30
       Events:
-        GetResource:
-          Type: Api
+        LivestreamMessaging:
+          Type: SNS
           Properties:
-            Path: /{proxy+}
-            Method: any
+            Topic: arn:aws:sns:eu-central-1:005887660038:livestream-messaging
 Outputs:
-  MyServiceApi:
-    Description: URL for application
-    Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping
-    Export:
-      Name: MyServiceApi
   LivestreamNotificatorFunction:
     Description: Send notification based on events from the livestream server - Function
       ARN

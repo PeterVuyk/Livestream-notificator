@@ -16,23 +16,28 @@ Resources:
       CodeUri: target/LivestreamNotificator-1.0.0-SNAPSHOT-lambda-package.zip
       MemorySize: 512
       Policies: AWSLambdaBasicExecutionRole
-      Timeout: 30
       Events:
       #TODO: Remove api
-        GetResource:
-          Type: Api
+#        GetResource:
+#          Type: Api
+#          Properties:
+#            Path: /{proxy+}
+#            Method: any
+        LivestreamMessaging:
+          Type: SNS
           Properties:
-            Path: /{proxy+}
-            Method: any
-      #TODO: Add sns to process messages
+            Topic: arn:aws:sns:eu-central-1:005887660038:livestream-messaging
       #TODO: Dead letter queue
 
+
+
+
 Outputs:
-  MyServiceApi:
-    Description: URL for application
-    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
-    Export:
-      Name: MyServiceApi
+#  MyServiceApi:
+#    Description: URL for application
+#    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
+#    Export:
+#      Name: MyServiceApi
 
   LivestreamNotificatorFunction:
     Description: "Send notification based on events from the livestream server - Function ARN"
