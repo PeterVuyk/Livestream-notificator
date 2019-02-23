@@ -1,47 +1,43 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  LivestreamNotificatorFunction
-
-  Send notifications based on events from the Livestream server
-
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Description: LivestreamNotificatorFunction, Send notifications based on events from the Livestream server
 Globals:
-    Function:
-        Timeout: 20
+  Api:
+    EndpointConfiguration: REGIONAL
+  Function:
+    Timeout: 20
 
 Resources:
-
-    LivestreamNotificatorFunction:
-        Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-        Properties:
-            CodeUri: target/LivestreamNotificator-1.0.0-SNAPSHOT.jar
-            Handler: livestream.App::handleRequest
-            Runtime: java8
-            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-                Variables:
-                    PARAM1: VALUE
-            Events:
-           #TODO: Remove api
-                LivestreamNotificator:
-                    Type: Api
-                    Properties:
-                        Path: /hello
-                        Method: get
-           #TODO: Add sns to process messages
-           #TODO: Dead letter queue
-
+  LivestreamNotificatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: livestream.App::handleRequest
+      Runtime: java8
+      CodeUri: target/LivestreamNotificator-1.0.0-SNAPSHOT-lambda-package.zip
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 30
+      Events:
+      #TODO: Remove api
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+      #TODO: Add sns to process messages
+      #TODO: Dead letter queue
 
 Outputs:
+  MyServiceApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
+    Export:
+      Name: MyServiceApi
 
-    HelloWorldApi:
-      Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  LivestreamNotificatorFunction:
+    Description: "Send notification based on events from the livestream server - Function ARN"
+    Value: !GetAtt LivestreamNotificatorFunction.Arn
 
-    LivestreamNotificatorFunction:
-      Description: "Send notification based on events from the livestream server - Function ARN"
-      Value: !GetAtt LivestreamNotificatorFunction.Arn
-
-    LivestreamNotificatorFunctionIamRole:
-      Description: "Implicit IAM Role created for the livestream notificator function"
-      Value: !GetAtt LivestreamNotificatorFunctionRole.Arn
+  LivestreamNotificatorFunctionIamRole:
+    Description: "Implicit IAM Role created for the livestream notificator function"
+    Value: !GetAtt LivestreamNotificatorFunctionRole.Arn
