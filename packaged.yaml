@@ -13,7 +13,7 @@ Resources:
     Properties:
       Handler: livestream.App::handleRequest
       Runtime: java8
-      CodeUri: s3://sam-package-files/770dbdea11b266b34035ed97eb00dcac
+      CodeUri: s3://sam-package-files/49f53c6d1c448b1c9098aba2d10bbeba
       MemorySize: 512
       Policies: AWSLambdaBasicExecutionRole
       Events:

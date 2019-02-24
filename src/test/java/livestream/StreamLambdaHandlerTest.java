@@ -24,14 +24,14 @@ import static org.junit.Assert.*;
 
 public class StreamLambdaHandlerTest {
 
-    private static App handler;
-    private static Context lambdaContext;
+//    private static App handler;
+//    private static Context lambdaContext;
 
-    @BeforeClass
-    public static void setUp() {
-        handler = new App();
-        lambdaContext = new MockLambdaContext();
-    }
+//    @BeforeClass
+//    public static void setUp() {
+//        handler = new App();
+//        lambdaContext = new MockLambdaContext();
+//    }
 
     @Test
     public void ping_streamRequest_respondsWithHello() {
