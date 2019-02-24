@@ -5,6 +5,7 @@ import com.github.seratch.jslack.api.webhook.Payload;
 import com.github.seratch.jslack.api.webhook.WebhookResponse;
 import livestream.exception.SlackNotificationException;
 import livestream.messaging.library.CameraStateChangedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,13 @@ public class SlackNotificator {
     @Value("${slack.channel}")
     private String channel;
 
+    private Slack slack;
+
+    @Autowired
+    public SlackNotificator(Slack slack) {
+        this.slack = slack;
+    }
+
     public void publish(CameraStateChangedEvent event) throws SlackNotificationException {
 
         String message;
@@ -40,7 +48,6 @@ public class SlackNotificator {
                 .username(username)
                 .text(message)
                 .build();
-        Slack slack = Slack.getInstance();
 
         WebhookResponse response;
         try {

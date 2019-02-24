@@ -17,20 +17,10 @@ Resources:
       MemorySize: 512
       Policies: AWSLambdaBasicExecutionRole
       Events:
-      #TODO: Remove api
-#        GetResource:
-#          Type: Api
-#          Properties:
-#            Path: /{proxy+}
-#            Method: any
         LivestreamMessaging:
           Type: SNS
           Properties:
             Topic: arn:aws:sns:eu-central-1:005887660038:livestream-messaging
-      #TODO: Dead letter queue
-
-
-
 
 Outputs:
 #  MyServiceApi:
