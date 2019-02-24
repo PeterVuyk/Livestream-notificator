@@ -4,18 +4,18 @@ import com.github.seratch.jslack.Slack;
 import com.github.seratch.jslack.api.webhook.Payload;
 import com.github.seratch.jslack.api.webhook.WebhookResponse;
 import livestream.exception.SlackNotificationException;
+import livestream.messaging.library.CameraStateChangedEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Component
 public class SlackNotificator {
 
-    private static final Logger LOGGER = Logger.getLogger(SlackNotificator.class.getName());
+    private static final String CAMERA_STATE_TEMPLATE = "Camera state changed, previous state: %s, new state: %s";
+    private static final String CAMERA_STATE_FAILURE_TEMPLATE = "@channel, Camera state Failure! Previous state: %s";
 
     @Value("${slack.webhookUrl}")
     private String webhookUrl;
@@ -26,7 +26,14 @@ public class SlackNotificator {
     @Value("${slack.channel}")
     private String channel;
 
-    public void publish(String message) throws SlackNotificationException {
+    public void publish(CameraStateChangedEvent event) throws SlackNotificationException {
+
+        String message;
+        if (event.getCameraState().equals("failure")) {
+            message = String.format(CAMERA_STATE_FAILURE_TEMPLATE, event.getPreviousCameraState());
+        } else {
+            message = String.format(CAMERA_STATE_TEMPLATE, event.getPreviousCameraState(), event.getCameraState());
+        }
 
         Payload payload = Payload.builder()
                 .channel(channel)
@@ -39,7 +46,6 @@ public class SlackNotificator {
         try {
             response = slack.send(webhookUrl, payload);
         } catch (IOException exception) {
-            LOGGER.log( Level.SEVERE, exception.toString(), exception);
             throw new SlackNotificationException(message, exception);
         }
         if (response.getCode() != HttpURLConnection.HTTP_OK) {

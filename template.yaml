@@ -5,13 +5,13 @@ Globals:
   Api:
     EndpointConfiguration: REGIONAL
   Function:
-    Timeout: 20
+    Timeout: 40
 
 Resources:
   LivestreamNotificatorFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: livestream.App::handleRequest
+      Handler: livestream.Application::handleRequest
       Runtime: java8
       CodeUri: target/LivestreamNotificator-1.0.0-SNAPSHOT-lambda-package.zip
       MemorySize: 512
