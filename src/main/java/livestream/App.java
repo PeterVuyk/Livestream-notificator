@@ -5,6 +5,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import livestream.messaging.factory.MessageFactory;
+import livestream.messaging.library.MessageInterface;
 import livestream.slack.SlackNotificator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +18,9 @@ public class App implements RequestHandler<SNSEvent, Void> {
 
     @Autowired
     private SlackNotificator slackNotificator;
+
+    @Autowired
+    private MessageFactory messageFactory;
 
     @Override
     public Void handleRequest(SNSEvent snsEvent, Context context) {
@@ -33,6 +38,8 @@ public class App implements RequestHandler<SNSEvent, Void> {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 
-        slackNotificator.publish(snsEvent.toString());
+        MessageInterface message = messageFactory.getMessage(snsEvent);
+
+        slackNotificator.publish(message.getMessageAction());
     }
 }
