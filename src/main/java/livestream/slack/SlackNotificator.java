@@ -16,7 +16,7 @@ import java.net.HttpURLConnection;
 public class SlackNotificator {
 
     private static final String CAMERA_STATE_TEMPLATE = "Camera state changed, previous state: %s, new state: %s";
-    private static final String CAMERA_STATE_FAILURE_TEMPLATE = "@channel, Camera state Failure! Previous state: %s";
+    private static final String CAMERA_STATE_FAILURE_TEMPLATE = "<!channel>, Camera state Failure! Previous state: %s";
 
     @Value("${slack.webhookUrl}")
     private String webhookUrl;
