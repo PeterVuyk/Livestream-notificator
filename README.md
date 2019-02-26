@@ -1,8 +1,8 @@
-# WIP: Livestream Notificator
+# Livestream Notificator
 
 Receive camera status updates via Slack when the camera state changes. The notificator is on the [Livestream-server](https://github.com/PeterVuyk/Livestream-server).
 
-### Still a WIP, what needs to be done:
+### Still in development, what needs to be done:
 
 - Started as POC so write tests.
 - Mayby later, add mail functionality.
