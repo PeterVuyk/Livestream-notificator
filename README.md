@@ -5,7 +5,6 @@ Receive camera status updates via Slack when the camera state changes. The notif
 ### Still a WIP, what needs to be done:
 
 - Started as POC so write tests.
-- Add steps how to do local development.
 - Mayby later, add mail functionality.
 - add a dead letter queue.
 
@@ -23,9 +22,21 @@ Before you can start with (local)development and deployment, it is important to 
 
 ### Local development
 
-TODO: Add the required steps for local development.
+Step 1: Make sure you have SAM locally installed:
 
-[SAM Local invoke](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-invoke.html)
+    npm install -g aws-sam-local
+
+Step 2: Create the package:
+
+    mvn clean package
+
+Step 3: The file `testNotification.json` contains a notification, run the command below to invoke the function with this command:
+
+    cat ./src/main/resources/testNotification.json | sam local invoke LivestreamNotificatorFunction
+
+Feel free to make adjustments in the file to test other messages. For more info read:
+- [SAM local generate-event](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-generate-event.html)
+- [SAM Local invoke](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-invoke.html)
 
 ### Deployment
 
@@ -44,7 +55,7 @@ Step 3: Run the command below to:
 - Give the project a stack name
 - Deploy the project based on the `packaged.yaml` file created in step 2.
 
-
+```
     sam deploy --template-file packaged.yaml --stack-name livestream-notificator --capabilities CAPABILITY_IAM --region eu-central-1
-
+```
 Once you've run the command, Cloudformation creates the required IAM Role and Lambda function, and will configure the Lambda function to listen to the SNS topic configured in the `template.yaml`. 
