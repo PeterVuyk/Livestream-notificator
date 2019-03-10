@@ -24,7 +24,7 @@ public class MessageFactory {
         switch (message.get(MessageInterface.RESOURCE_ID_KEY_KEY).toString()) {
             case CameraStateChangedEvent.RESOURCE_ID:
                 return new CameraStateChangedEvent(message);
-            //Add later more messages so factory can return them.
+            //Add later more messages if needed so factory can process them.
             default:
                 throw new MessageNotFoundException(snsMessage);
         }

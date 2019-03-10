@@ -23,12 +23,6 @@ Resources:
             Topic: arn:aws:sns:eu-central-1:005887660038:livestream-messaging
 
 Outputs:
-#  MyServiceApi:
-#    Description: URL for application
-#    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
-#    Export:
-#      Name: MyServiceApi
-
   LivestreamNotificatorFunction:
     Description: "Send notification based on events from the livestream server - Function ARN"
     Value: !GetAtt LivestreamNotificatorFunction.Arn

@@ -18,19 +18,24 @@ public class SlackNotificator {
     private static final String CAMERA_STATE_TEMPLATE = "Camera state changed, previous state: %s, new state: %s";
     private static final String CAMERA_STATE_FAILURE_TEMPLATE = "<!channel>, Camera state Failure! Previous state: %s";
 
-    @Value("${slack.webhookUrl}")
     private String webhookUrl;
 
-    @Value("${slack.username}")
     private String username;
 
-    @Value("${slack.channel}")
     private String channel;
 
     private Slack slack;
 
     @Autowired
-    public SlackNotificator(Slack slack) {
+    public SlackNotificator(
+            @Value("${slack.webhookUrl}") String webhookUrl,
+            @Value("${slack.username}") String username,
+            @Value("${slack.channel}") String channel,
+            Slack slack
+    ) {
+        this.webhookUrl = webhookUrl;
+        this.username = username;
+        this.channel = channel;
         this.slack = slack;
     }
 
