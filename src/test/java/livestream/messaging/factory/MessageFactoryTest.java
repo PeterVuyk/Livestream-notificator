@@ -26,21 +26,21 @@ public class MessageFactoryTest {
 
     @Test
     public void testGetMessageSuccess() throws MessageNotSupportedException {
-        String message = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"resourceIdKey\":\"CameraStateChangedEvent\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"previousCameraState\":\"running\"}";
+        String message = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"resourceIdKey\":\"CameraStateChangedEvent\",\"channel\":\"Channel-name\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"previousCameraState\":\"running\"}";
         MessageInterface event = factory.getMessage(this.createSNSEvent(message));
         assertThat(event, instanceOf(CameraStateChangedEvent.class));
     }
 
     @Test(expected = MessageNotFoundException.class)
     public void testGetMessageMissingResourceIdKey() throws MessageNotSupportedException {
-        String message = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"previousCameraState\":\"running\"}";
+        String message = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"channel\":\"Channel-name\",\"previousCameraState\":\"running\"}";
         MessageInterface event = factory.getMessage(this.createSNSEvent(message));
         assertThat(event, instanceOf(CameraStateChangedEvent.class));
     }
 
     @Test(expected = MessageNotFoundException.class)
     public void testGetMessageNotExistingEvent() throws MessageNotSupportedException {
-        String message = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"resourceIdKey\":\"NonExistingEventName\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"previousCameraState\":\"running\"}";
+        String message = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"resourceIdKey\":\"NonExistingEventName\",\"channel\":\"Channel-name\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"previousCameraState\":\"running\"}";
         MessageInterface event = factory.getMessage(this.createSNSEvent(message));
         assertThat(event, instanceOf(CameraStateChangedEvent.class));
     }

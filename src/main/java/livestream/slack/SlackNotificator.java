@@ -15,8 +15,8 @@ import java.net.HttpURLConnection;
 @Component
 public class SlackNotificator {
 
-    private static final String CAMERA_STATE_TEMPLATE = "Camera state changed, previous state: %s, new state: %s";
-    private static final String CAMERA_STATE_FAILURE_TEMPLATE = "<!channel>, Camera state Failure! Previous state: %s";
+    private static final String CAMERA_STATE_TEMPLATE = "Channel %s: Camera state changed, previous state: %s, new state: %s";
+    private static final String CAMERA_STATE_FAILURE_TEMPLATE = "<!channel>, Channel %s: Camera state Failure! Previous state: %s";
 
     private String webhookUrl;
 
@@ -43,9 +43,18 @@ public class SlackNotificator {
 
         String message;
         if (event.getCameraState().equals("failure")) {
-            message = String.format(CAMERA_STATE_FAILURE_TEMPLATE, event.getPreviousCameraState());
+            message = String.format(
+                    CAMERA_STATE_FAILURE_TEMPLATE,
+                    event.getChannel(),
+                    event.getPreviousCameraState()
+            );
         } else {
-            message = String.format(CAMERA_STATE_TEMPLATE, event.getPreviousCameraState(), event.getCameraState());
+            message = String.format(
+                    CAMERA_STATE_TEMPLATE,
+                    event.getChannel(),
+                    event.getPreviousCameraState(),
+                    event.getCameraState()
+            );
         }
 
         Payload payload = Payload.builder()

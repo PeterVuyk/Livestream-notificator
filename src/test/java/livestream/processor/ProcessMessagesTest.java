@@ -9,11 +9,7 @@ import livestream.messaging.library.CameraStateChangedEvent;
 import livestream.slack.SlackNotificator;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.*;
 
@@ -38,7 +34,7 @@ public class ProcessMessagesTest {
     }
 
     private CameraStateChangedEvent getCameraStateChangedEvent() throws MessageNotValidException {
-        String content = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"resourceIdKey\":\"CameraStateChangedEvent\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"previousCameraState\":\"running\"}";
+        String content = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"resourceIdKey\":\"CameraStateChangedEvent\",\"channel\":\"ChannelName\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"previousCameraState\":\"running\"}";
         JSONObject message = new JSONObject(content);
         return new CameraStateChangedEvent(message);
     }

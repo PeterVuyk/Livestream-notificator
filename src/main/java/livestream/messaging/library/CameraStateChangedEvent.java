@@ -4,7 +4,6 @@ import livestream.exception.MessageNotValidException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class CameraStateChangedEvent implements MessageInterface {
@@ -13,6 +12,7 @@ public class CameraStateChangedEvent implements MessageInterface {
 
     private static final String CAMERA_STATE_KEY = "cameraState";
     private static final String PREVIOUS_CAMERA_STATE_KEY = "previousCameraState";
+    private static final String CHANNEL = "channel";
 
     private String cameraState;
 
@@ -26,6 +26,8 @@ public class CameraStateChangedEvent implements MessageInterface {
 
     private String methodAction;
 
+    private String channel;
+
     public CameraStateChangedEvent(JSONObject message) throws MessageNotValidException {
         this.validate(message);
         this.cameraState = message.get(CAMERA_STATE_KEY).toString();
@@ -34,6 +36,7 @@ public class CameraStateChangedEvent implements MessageInterface {
         this.resourceIdKey = message.get(RESOURCE_ID_KEY_KEY).toString();
         this.messageDate = message.get(MESSAGE_DATE_KEY).toString();
         this.methodAction = message.get(METHOD_ACTION_KEY).toString();
+        this.channel = message.get(CHANNEL).toString();
     }
 
     public String getCameraState() {
@@ -60,6 +63,10 @@ public class CameraStateChangedEvent implements MessageInterface {
         return messageDate;
     }
 
+    public String getChannel() {
+        return channel;
+    }
+
     private void validate(JSONObject message) throws MessageNotValidException {
         String[] requiredFields = {
                 CAMERA_STATE_KEY,
@@ -68,6 +75,7 @@ public class CameraStateChangedEvent implements MessageInterface {
                 RESOURCE_ID_KEY_KEY,
                 MESSAGE_DATE_KEY,
                 METHOD_ACTION_KEY,
+                CHANNEL,
         };
 
         List<String> missingFields = new ArrayList<String>();

@@ -14,7 +14,7 @@ public class CameraStateChangedEventTest {
 
     @BeforeClass
     public static void setUp() throws MessageNotValidException {
-        String content = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"resourceIdKey\":\"CameraStateChangedEvent\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"previousCameraState\":\"running\"}";
+        String content = "{\"methodAction\":\"event\",\"resourceId\":\"713e88c4-bfa3-4aa3-a376-eb8b85573c7b\",\"resourceIdKey\":\"CameraStateChangedEvent\",\"channel\":\"Channel-name\",\"messageDate\":\"2019-02-24 08:53:31\",\"cameraState\":\"stopping\",\"previousCameraState\":\"running\"}";
         JSONObject message = new JSONObject(content);
         event = new CameraStateChangedEvent(message);
     }
@@ -52,5 +52,10 @@ public class CameraStateChangedEventTest {
     @Test
     public void testGetMessageDate() {
         assertEquals("2019-02-24 08:53:31", event.getMessageDate());
+    }
+
+    @Test
+    public void testGetChannel() {
+        assertEquals("Channel-name", event.getChannel());
     }
 }
